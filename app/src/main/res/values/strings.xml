@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Средняя оценка</string>
+
+    <string name="text_mark_2">2</string>
+    <string name="text_mark_3">3</string>
+    <string name="text_mark_4">4</string>
+    <string name="text_mark_5">5</string>
+
+    <string name="text_clear">ОЧИСТИТЬ</string>
+    <string name="text_backspace"><![CDATA[<—]]></string>
+    <string name="text_average">Среднее:</string>
+    <string name="text_n_a">N/A</string>
+    <string name="empty">_</string>
+</resources>
