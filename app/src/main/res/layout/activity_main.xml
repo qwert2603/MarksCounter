@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:minWidth="100sp"
             android:textColor="#000000"
             android:textSize="36sp"
             tools:text="4.51" />
@@ -39,9 +40,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
-        android:text="@string/empty"
         android:textColor="#000000"
-        android:textSize="24sp" />
+        android:textSize="24sp"
+        tools:text="@string/empty" />
 
     <LinearLayout
         android:id="@+id/mark_but_ll"
