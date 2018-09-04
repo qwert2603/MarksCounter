@@ -13,6 +13,8 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
+    private static final String MARKS_KEY = "marks";
+
     private TextView mAverageTextView;
     private TextView mMarksTextView;
 
@@ -31,9 +33,14 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            mMarks = (LinkedList<Integer>) savedInstanceState.getSerializable(MARKS_KEY);
+        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             this.<ViewGroup>findViewById(R.id.root_LinearLayout)
@@ -68,6 +75,12 @@ public class MainActivity extends Activity {
         });
 
         updateTextViews();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(MARKS_KEY, mMarks);
     }
 
     private void updateTextViews() {
