@@ -1,6 +1,12 @@
 <resources>
 
-    <style name="Button" >
+    <style name="AppThemeBase" parent="@android:style/Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:fontFamily">@font/google_sans</item>
+    </style>
+
+    <style name="AppTheme" parent="AppThemeBase" />
+
+    <style name="Button">
         <item name="android:textColor">@color/button_text_color</item>
         <item name="android:layout_margin">4dp</item>
         <item name="android:gravity">center_horizontal</item>
