@@ -8,7 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends Activity {
@@ -39,7 +41,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState != null) {
-            mMarks = (LinkedList<Integer>) savedInstanceState.getSerializable(MARKS_KEY);
+            final Serializable serializable = savedInstanceState.getSerializable(MARKS_KEY);
+            if (serializable != null) {
+                mMarks = new LinkedList<>((List<Integer>) serializable);
+            }
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
