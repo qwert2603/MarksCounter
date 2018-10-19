@@ -6,7 +6,7 @@ android {
         applicationId "com.alex.markscounter"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 5
+        versionCode 6
         versionName "2.3"
     }
     buildTypes {
@@ -20,8 +20,4 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
-
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
