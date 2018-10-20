@@ -2,6 +2,6 @@
 
     <item android:drawable="@drawable/background_button_5_normal" android:state_pressed="false" />
 
-    <item android:drawable="@color/mark_5" />
+    <item android:drawable="@drawable/background_button_5_pressed" />
 
 </selector>
