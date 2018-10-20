@@ -2,7 +2,6 @@ package com.example.alex.markscounter;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,11 +46,9 @@ public class MainActivity extends Activity {
             }
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            this.<ViewGroup>findViewById(R.id.root_LinearLayout)
-                    .getLayoutTransition()
-                    .enableTransitionType(LayoutTransition.CHANGING);
-        }
+        this.<ViewGroup>findViewById(R.id.root_LinearLayout)
+                .getLayoutTransition()
+                .enableTransitionType(LayoutTransition.CHANGING);
 
         mAverageTextView = findViewById(R.id.average_text_view);
         mMarksTextView = findViewById(R.id.marks_text_view);
@@ -91,9 +88,11 @@ public class MainActivity extends Activity {
     private void updateTextViews() {
         StringBuilder stringBuilder = new StringBuilder();
         int sum = 0;
-        for (int i : mMarks) {
-            stringBuilder.append(i);
-            sum += i;
+        for (int i = 0; i < mMarks.size(); i++) {
+            if (i > 0 && i % 4 == 0) stringBuilder.append(' ');
+            int mark = mMarks.get(i);
+            stringBuilder.append(mark);
+            sum += mark;
         }
         String res = stringBuilder.toString();
         if (res.equals("")) {
