@@ -1,13 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            storeFile file('/home/alex/StudioProjects/key.jks')
+            storePassword key_store_password
+            keyAlias 'marks_counter'
+            keyPassword key_store_password
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.alex.markscounter"
         minSdkVersion 16
         targetSdkVersion 28
-        versionCode 8
-        versionName "2.3.1"
+        versionCode 9
+        versionName "2.4.0"
+        archivesBaseName = "marks_counter_$versionName"
     }
     buildTypes {
         debug {
@@ -17,7 +27,8 @@ android {
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }

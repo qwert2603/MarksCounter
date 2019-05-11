@@ -4,17 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@android:color/white"
     android:orientation="vertical"
-    android:paddingEnd="24dp"
+    android:paddingStart="24dp"
     android:paddingLeft="24dp"
+    android:paddingEnd="24dp"
     android:paddingRight="24dp"
-    android:paddingStart="24dp">
+    tools:background="@android:color/white">
+
+    <ImageView
+        android:id="@+id/toggle_night_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="12dp"
+        android:padding="16dp"
+        tools:background="@drawable/background_button_toogle_night"
+        tools:ignore="ContentDescription"
+        tools:src="@drawable/ic_moon" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2" />
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,22 +33,23 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/average_label_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/text_average"
-            android:textColor="#000000"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            tools:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/average_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:minWidth="100sp"
-            android:textColor="#000000"
             android:textSize="36sp"
-            tools:text="4.51" />
+            tools:text="4.51"
+            tools:textColor="@android:color/black" />
 
     </LinearLayout>
 
@@ -46,9 +58,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:textColor="#000000"
         android:textSize="24sp"
-        tools:text="4544 5423 42" />
+        tools:text="4544 5423 42"
+        tools:textColor="@android:color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -108,8 +120,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_weight="1"
-            android:background="@drawable/background_button_remote"
-            android:text="@string/text_backspace" />
+            android:text="@string/text_backspace"
+            tools:background="@drawable/background_button_remote" />
 
         <TextView
             android:id="@+id/clear_button"
@@ -117,8 +129,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/background_button_remote"
-            android:text="@string/text_clear" />
+            android:text="@string/text_clear"
+            tools:background="@drawable/background_button_remote" />
 
     </LinearLayout>
 

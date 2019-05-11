@@ -4,8 +4,6 @@
         android:width="@dimen/button_border"
         android:color="@color/mark_2" />
 
-    <solid android:color="@android:color/white" />
-
     <corners android:radius="@dimen/button_corner_radius" />
 
 </shape>

@@ -3,4 +3,7 @@
     <color name="mark_3">#fff00f</color>
     <color name="mark_4">#00ff00</color>
     <color name="mark_5">#ff0ff0</color>
+
+    <color name="text_day">#000000</color>
+    <color name="text_night">#D4D4D4</color>
 </resources>
