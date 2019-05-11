@@ -144,10 +144,10 @@ public class MainActivity extends Activity {
     private void updateNight() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(IS_NIGHT ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(getColor(IS_NIGHT ? android.R.color.black : android.R.color.white));
+            getWindow().setStatusBarColor(IS_NIGHT ? 0xFF1c2533 : Color.WHITE);
         }
 
-        mRootLinearLayout.setBackgroundColor(IS_NIGHT ? Color.BLACK : Color.WHITE);
+        mRootLinearLayout.setBackgroundColor(IS_NIGHT ? 0xFF1c2533 : Color.WHITE);
 
         int textViewColor = getResources().getColor(IS_NIGHT ? R.color.text_night : R.color.text_day);
         mAverageTextView.setTextColor(textViewColor);

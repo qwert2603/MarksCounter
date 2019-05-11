@@ -5,5 +5,5 @@
     <color name="mark_5">#ff0ff0</color>
 
     <color name="text_day">#000000</color>
-    <color name="text_night">#D4D4D4</color>
+    <color name="text_night">#FFFFFF</color>
 </resources>
