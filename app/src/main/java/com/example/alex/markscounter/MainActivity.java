@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
-    private static boolean IS_NIGHT = false;
+    public static boolean IS_NIGHT = false;
 
     private static final String MARKS_KEY = "marks";
 
@@ -27,6 +27,7 @@ public class MainActivity extends Activity {
     private TextView mMarksTextView;
     private LinearLayout mRootLinearLayout;
     private ImageView mToggleNightButton;
+    private ImageView mAboutButton;
 
     private final List<TextView> mButtons = new ArrayList<>();
     private TextView mBackspaceButton;
@@ -73,6 +74,13 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 IS_NIGHT = !IS_NIGHT;
                 updateNight();
+            }
+        });
+        mAboutButton = findViewById(R.id.about_button);
+        mAboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AboutDialog().show(getFragmentManager(), null);
             }
         });
 
@@ -142,12 +150,14 @@ public class MainActivity extends Activity {
     }
 
     private void updateNight() {
+        int backgroundColor = IS_NIGHT ? getResources().getColor(R.color.background_day) : Color.WHITE;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(IS_NIGHT ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            getWindow().setStatusBarColor(IS_NIGHT ? 0xFF1c2533 : Color.WHITE);
+            getWindow().setStatusBarColor(backgroundColor);
         }
 
-        mRootLinearLayout.setBackgroundColor(IS_NIGHT ? 0xFF1c2533 : Color.WHITE);
+        mRootLinearLayout.setBackgroundColor(backgroundColor);
 
         int textViewColor = getResources().getColor(IS_NIGHT ? R.color.text_night : R.color.text_day);
         mAverageTextView.setTextColor(textViewColor);
@@ -155,7 +165,8 @@ public class MainActivity extends Activity {
         mMarksTextView.setTextColor(textViewColor);
 
         mToggleNightButton.setImageDrawable(getResources().getDrawable(IS_NIGHT ? R.drawable.ic_sun : R.drawable.ic_moon));
-        mToggleNightButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_button_toogle_night_night : R.drawable.background_button_toogle_night));
+        mToggleNightButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
+        mAboutButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
 
         for (TextView mButton : mButtons) {
             mButton.setTextColor(getResources().getColorStateList(IS_NIGHT ? R.color.button_text_color_night : R.color.button_text_color));

@@ -6,4 +6,6 @@
 
     <color name="text_day">#000000</color>
     <color name="text_night">#FFFFFF</color>
+
+    <color name="background_day">#1c2533</color>
 </resources>
