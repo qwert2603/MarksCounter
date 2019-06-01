@@ -13,9 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 public class MainActivity extends Activity {
 
@@ -41,6 +43,9 @@ public class MainActivity extends Activity {
 
     private LinkedList<Integer> mMarks = new LinkedList<>();
 
+    private final Random random = new Random();
+    private final List<Integer> countdownList = Arrays.asList(5, 4, 3, 2);
+
     private View.OnClickListener getMarkButtonOnClickListener(final int mark) {
         return new View.OnClickListener() {
             @Override
@@ -48,6 +53,10 @@ public class MainActivity extends Activity {
                 if (mMarks.size() < MAX_MARKS_COUNT) {
                     mMarks.add(mark);
                     updateTextViews();
+
+                    if (mMarks.equals(countdownList) && random.nextInt(42) == 0) {
+                        new CountdownDialog().show(getFragmentManager(), null);
+                    }
                 }
             }
         };
