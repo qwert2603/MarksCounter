@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
                 isDarkTheme = !isDarkTheme;
                 prefs.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply();
                 updateNight();
+                updateTextViews();
             }
         });
         mAboutButton = findViewById(R.id.about_button);
@@ -152,10 +153,13 @@ public class MainActivity extends Activity {
         prefs.edit().putString(KEY_MARKS, marksString).apply();
 
         if (!mMarks.isEmpty()) {
-            long i = Math.round((sum * 100.0) / mMarks.size());
-            mAverageTextView.setText(String.format(Locale.getDefault(), "%.2f", i / 100.0));
+            final long i = Math.round((sum * 100.0) / mMarks.size());
+            final double average = i / 100.0;
+            mAverageTextView.setText(String.format(Locale.getDefault(), "%.2f", average));
+            mAverageTextView.setTextColor(getResources().getColor(getAverageColor(average)));
         } else {
             mAverageTextView.setText(R.string.text_n_a);
+            mAverageTextView.setTextColor(getResources().getColor(getTextColor()));
         }
     }
 
@@ -169,8 +173,7 @@ public class MainActivity extends Activity {
 
         mRootLinearLayout.setBackgroundColor(backgroundColor);
 
-        int textViewColor = getResources().getColor(isDarkTheme ? R.color.text_night : R.color.text_day);
-        mAverageTextView.setTextColor(textViewColor);
+        int textViewColor = getResources().getColor(getTextColor());
         mAverageLabelTextView.setTextColor(textViewColor);
         mMarksTextView.setTextColor(textViewColor);
 
@@ -184,5 +187,19 @@ public class MainActivity extends Activity {
 
         mBackspaceButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
         mClearButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
+    }
+
+    private static int getAverageColor(double average) {
+        if (average == 2.5 || average == 3.5 || average == 4.5) {
+            return isDarkTheme ? R.color.mark_hz_night : R.color.mark_hz_day;
+        }
+        if (average < 2.5) return R.color.mark_2;
+        if (average < 3.5) return R.color.mark_3;
+        if (average < 4.5) return R.color.mark_4;
+        return R.color.mark_5;
+    }
+
+    private static int getTextColor() {
+        return isDarkTheme ? R.color.text_night : R.color.text_day;
     }
 }

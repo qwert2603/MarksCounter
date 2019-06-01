@@ -70,9 +70,9 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:minWidth="100sp"
-                android:textSize="36sp"
+                android:textSize="42sp"
                 tools:text="4.51"
-                tools:textColor="@android:color/black" />
+                tools:textColor="@color/mark_3" />
 
         </LinearLayout>
 
