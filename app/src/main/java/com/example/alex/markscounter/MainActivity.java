@@ -2,15 +2,16 @@ package com.example.alex.markscounter;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +19,14 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
-    public static boolean IS_NIGHT = false;
+    private static final int MAX_MARKS_COUNT = 78;
 
-    private static final String MARKS_KEY = "marks";
+    private static final String KEY_MARKS = "marks";
+    private static final String KEY_DARK_THEME = "dark_theme";
+
+    private SharedPreferences prefs;
+
+    public static boolean isDarkTheme;
 
     private TextView mAverageTextView;
     private TextView mAverageLabelTextView;
@@ -39,7 +45,7 @@ public class MainActivity extends Activity {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mMarks.size() < 42) {
+                if (mMarks.size() < MAX_MARKS_COUNT) {
                     mMarks.add(mark);
                     updateTextViews();
                 }
@@ -48,17 +54,24 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null) {
-            final Serializable serializable = savedInstanceState.getSerializable(MARKS_KEY);
-            if (serializable != null) {
-                mMarks = new LinkedList<>((List<Integer>) serializable);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        final String marksString = prefs.getString(KEY_MARKS, "");
+        if (marksString != null) {
+            for (int i = 0; i < marksString.length(); i++) {
+                final char c = marksString.charAt(i);
+                if (c == '2') mMarks.add(2);
+                if (c == '3') mMarks.add(3);
+                if (c == '4') mMarks.add(4);
+                if (c == '5') mMarks.add(5);
             }
         }
+
+        isDarkTheme = prefs.getBoolean(KEY_DARK_THEME, false);
 
         mRootLinearLayout = findViewById(R.id.root_LinearLayout);
         mRootLinearLayout
@@ -72,7 +85,8 @@ public class MainActivity extends Activity {
         mToggleNightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                IS_NIGHT = !IS_NIGHT;
+                isDarkTheme = !isDarkTheme;
+                prefs.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply();
                 updateNight();
             }
         });
@@ -121,12 +135,6 @@ public class MainActivity extends Activity {
         updateTextViews();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(MARKS_KEY, mMarks);
-    }
-
     private void updateTextViews() {
         StringBuilder stringBuilder = new StringBuilder();
         int sum = 0;
@@ -136,11 +144,13 @@ public class MainActivity extends Activity {
             stringBuilder.append(mark);
             sum += mark;
         }
-        String res = stringBuilder.toString();
-        if (res.equals("")) {
-            res = getString(R.string.empty);
+        String marksString = stringBuilder.toString();
+        if (marksString.equals("")) {
+            marksString = getString(R.string.empty);
         }
-        mMarksTextView.setText(res);
+        mMarksTextView.setText(marksString);
+        prefs.edit().putString(KEY_MARKS, marksString).apply();
+
         if (!mMarks.isEmpty()) {
             long i = Math.round((sum * 100.0) / mMarks.size());
             mAverageTextView.setText(String.format(Locale.getDefault(), "%.2f", i / 100.0));
@@ -150,29 +160,29 @@ public class MainActivity extends Activity {
     }
 
     private void updateNight() {
-        int backgroundColor = IS_NIGHT ? getResources().getColor(R.color.background_day) : Color.WHITE;
+        int backgroundColor = isDarkTheme ? getResources().getColor(R.color.background_day) : Color.WHITE;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(IS_NIGHT ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            getWindow().getDecorView().setSystemUiVisibility(isDarkTheme ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             getWindow().setStatusBarColor(backgroundColor);
         }
 
         mRootLinearLayout.setBackgroundColor(backgroundColor);
 
-        int textViewColor = getResources().getColor(IS_NIGHT ? R.color.text_night : R.color.text_day);
+        int textViewColor = getResources().getColor(isDarkTheme ? R.color.text_night : R.color.text_day);
         mAverageTextView.setTextColor(textViewColor);
         mAverageLabelTextView.setTextColor(textViewColor);
         mMarksTextView.setTextColor(textViewColor);
 
-        mToggleNightButton.setImageDrawable(getResources().getDrawable(IS_NIGHT ? R.drawable.ic_sun : R.drawable.ic_moon));
-        mToggleNightButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
-        mAboutButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
+        mToggleNightButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_sun : R.drawable.ic_moon));
+        mToggleNightButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
+        mAboutButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
 
         for (TextView mButton : mButtons) {
-            mButton.setTextColor(getResources().getColorStateList(IS_NIGHT ? R.color.button_text_color_night : R.color.button_text_color));
+            mButton.setTextColor(getResources().getColorStateList(isDarkTheme ? R.color.button_text_color_night : R.color.button_text_color));
         }
 
-        mBackspaceButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
-        mClearButton.setBackground(getResources().getDrawable(IS_NIGHT ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
+        mBackspaceButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
+        mClearButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
     }
 }

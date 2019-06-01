@@ -20,9 +20,9 @@ public class AboutDialog extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_about, null);
 
         view.findViewById(R.id.background_Linear_layout)
-                .setBackgroundColor(MainActivity.IS_NIGHT ? getResources().getColor(R.color.background_day) : Color.WHITE);
+                .setBackgroundColor(MainActivity.isDarkTheme ? getResources().getColor(R.color.background_day) : Color.WHITE);
 
-        int textViewColor = getResources().getColor(MainActivity.IS_NIGHT ? R.color.text_night : R.color.text_day);
+        int textViewColor = getResources().getColor(MainActivity.isDarkTheme ? R.color.text_night : R.color.text_day);
         view.<TextView>findViewById(R.id.title_text_view).setTextColor(textViewColor);
         TextView messageTextView = view.findViewById(R.id.message_text_view);
         messageTextView.setTextColor(textViewColor);
