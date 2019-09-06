@@ -7,17 +7,18 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.transition.TransitionManager;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 
 public class MainActivity extends Activity {
 
@@ -25,6 +26,7 @@ public class MainActivity extends Activity {
 
     private static final String KEY_MARKS = "marks";
     private static final String KEY_DARK_THEME = "dark_theme";
+    public static final String KEY_MARK_1 = "mark_1";
 
     private SharedPreferences prefs;
 
@@ -36,15 +38,26 @@ public class MainActivity extends Activity {
     private LinearLayout mRootLinearLayout;
     private ImageView mToggleNightButton;
     private ImageView mAboutButton;
+    private ImageView mSettingsButton;
 
     private final List<TextView> mButtons = new ArrayList<>();
     private TextView mBackspaceButton;
     private TextView mClearButton;
+    private FrameLayout mMark1Back;
 
     private LinkedList<Integer> mMarks = new LinkedList<>();
 
-    private final Random random = new Random();
-    private final List<Integer> countdownList = Arrays.asList(5, 4, 3, 2);
+    private final SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (KEY_MARK_1.equals(key)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.markButtons_LinearLayout));
+                }
+                mMark1Back.setVisibility(prefs.getBoolean(KEY_MARK_1, false) ? View.VISIBLE : View.GONE);
+            }
+        }
+    };
 
     private View.OnClickListener getMarkButtonOnClickListener(final int mark) {
         return new View.OnClickListener() {
@@ -53,10 +66,6 @@ public class MainActivity extends Activity {
                 if (mMarks.size() < MAX_MARKS_COUNT) {
                     mMarks.add(mark);
                     updateTextViews();
-
-                    if (mMarks.equals(countdownList) && random.nextInt(42) == 0) {
-                        new CountdownDialog().show(getFragmentManager(), null);
-                    }
                 }
             }
         };
@@ -73,6 +82,7 @@ public class MainActivity extends Activity {
         if (marksString != null) {
             for (int i = 0; i < marksString.length(); i++) {
                 final char c = marksString.charAt(i);
+                if (c == '1') mMarks.add(1);
                 if (c == '2') mMarks.add(2);
                 if (c == '3') mMarks.add(3);
                 if (c == '4') mMarks.add(4);
@@ -107,7 +117,15 @@ public class MainActivity extends Activity {
                 new AboutDialog().show(getFragmentManager(), null);
             }
         });
+        mSettingsButton = findViewById(R.id.settings_button);
+        mSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SettingsDialog().show(getFragmentManager(), null);
+            }
+        });
 
+        mButtons.add(this.<TextView>findViewById(R.id.mark_1_button));
         mButtons.add(this.<TextView>findViewById(R.id.mark_2_button));
         mButtons.add(this.<TextView>findViewById(R.id.mark_3_button));
         mButtons.add(this.<TextView>findViewById(R.id.mark_4_button));
@@ -117,11 +135,13 @@ public class MainActivity extends Activity {
 
         mBackspaceButton = findViewById(R.id.backspace_button);
         mClearButton = findViewById(R.id.clear_button);
+        mMark1Back = findViewById(R.id.mark_1_back);
 
-        findViewById(R.id.mark_2_button).setOnClickListener(getMarkButtonOnClickListener(2));
-        findViewById(R.id.mark_3_button).setOnClickListener(getMarkButtonOnClickListener(3));
-        findViewById(R.id.mark_4_button).setOnClickListener(getMarkButtonOnClickListener(4));
-        findViewById(R.id.mark_5_button).setOnClickListener(getMarkButtonOnClickListener(5));
+        findViewById(R.id.mark_1_back).setOnClickListener(getMarkButtonOnClickListener(1));
+        findViewById(R.id.mark_2_back).setOnClickListener(getMarkButtonOnClickListener(2));
+        findViewById(R.id.mark_3_back).setOnClickListener(getMarkButtonOnClickListener(3));
+        findViewById(R.id.mark_4_back).setOnClickListener(getMarkButtonOnClickListener(4));
+        findViewById(R.id.mark_5_back).setOnClickListener(getMarkButtonOnClickListener(5));
 
         mBackspaceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +163,20 @@ public class MainActivity extends Activity {
 
         updateNight();
         updateTextViews();
+
+        mMark1Back.setVisibility(prefs.getBoolean(KEY_MARK_1, false) ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        prefs.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+    }
+
+    @Override
+    protected void onStop() {
+        prefs.unregisterOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+        super.onStop();
     }
 
     private void updateTextViews() {
@@ -173,7 +207,7 @@ public class MainActivity extends Activity {
     }
 
     private void updateNight() {
-        int backgroundColor = isDarkTheme ? getResources().getColor(R.color.background_day) : Color.WHITE;
+        int backgroundColor = isDarkTheme ? getResources().getColor(R.color.background_night) : Color.WHITE;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(isDarkTheme ? 0 : View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -189,6 +223,8 @@ public class MainActivity extends Activity {
         mToggleNightButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_sun : R.drawable.ic_moon));
         mToggleNightButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
         mAboutButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
+        mSettingsButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_settings_white_24dp : R.drawable.ic_settings_black_24dp));
+        mSettingsButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
 
         for (TextView mButton : mButtons) {
             mButton.setTextColor(getResources().getColorStateList(isDarkTheme ? R.color.button_text_color_night : R.color.button_text_color));
@@ -199,9 +235,10 @@ public class MainActivity extends Activity {
     }
 
     private static int getAverageColor(double average) {
-        if (average == 2.5 || average == 3.5 || average == 4.5) {
+        if (average % 1 == 0.5) {
             return isDarkTheme ? R.color.mark_hz_night : R.color.mark_hz_day;
         }
+        if (average < 1.5) return R.color.mark_1;
         if (average < 2.5) return R.color.mark_2;
         if (average < 3.5) return R.color.mark_3;
         if (average < 4.5) return R.color.mark_4;
