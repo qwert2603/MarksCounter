@@ -1,4 +1,6 @@
 <resources>
+    <color name="colorAccent">#cf0000</color>
+
     <color name="mark_1">#9a0000</color>
     <color name="mark_2">#fa0000</color>
     <color name="mark_3">#efca35</color>

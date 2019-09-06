@@ -35,6 +35,6 @@
         android:layout_marginTop="8dp"
         android:text="@string/text_good_job"
         android:textAllCaps="true"
-        android:textColor="@color/mark_2" />
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout>

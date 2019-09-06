@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:buttonTint="@color/mark_2"
+        android:buttonTint="@color/colorAccent"
         android:textSize="16sp"
         android:text="@string/mark_1_enable"
         tools:textColor="@color/text_night" />
@@ -36,6 +36,6 @@
         android:layout_marginTop="8dp"
         android:text="@android:string/ok"
         android:textAllCaps="true"
-        android:textColor="@color/mark_2" />
+        android:textColor="@color/colorAccent" />
 
 </LinearLayout>
