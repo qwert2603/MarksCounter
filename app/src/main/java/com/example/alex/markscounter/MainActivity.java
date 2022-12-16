@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.transition.TransitionManager;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -45,14 +44,14 @@ public class MainActivity extends Activity {
     private TextView mClearButton;
     private FrameLayout mMark1Back;
 
-    private LinkedList<Integer> mMarks = new LinkedList<>();
+    private final LinkedList<Integer> mMarks = new LinkedList<>();
 
     private final SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (KEY_MARK_1.equals(key)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    TransitionManager.beginDelayedTransition((ViewGroup) findViewById(R.id.markButtons_LinearLayout));
+                    TransitionManager.beginDelayedTransition(findViewById(R.id.markButtons_LinearLayout));
                 }
                 mMark1Back.setVisibility(prefs.getBoolean(KEY_MARK_1, false) ? View.VISIBLE : View.GONE);
             }
@@ -60,13 +59,10 @@ public class MainActivity extends Activity {
     };
 
     private View.OnClickListener getMarkButtonOnClickListener(final int mark) {
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mMarks.size() < MAX_MARKS_COUNT) {
-                    mMarks.add(mark);
-                    updateTextViews();
-                }
+        return v -> {
+            if (mMarks.size() < MAX_MARKS_COUNT) {
+                mMarks.add(mark);
+                updateTextViews();
             }
         };
     }
@@ -101,37 +97,24 @@ public class MainActivity extends Activity {
         mAverageLabelTextView = findViewById(R.id.average_label_text_view);
         mMarksTextView = findViewById(R.id.marks_text_view);
         mToggleNightButton = findViewById(R.id.toggle_night_button);
-        mToggleNightButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isDarkTheme = !isDarkTheme;
-                prefs.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply();
-                updateNight();
-                updateTextViews();
-            }
+        mToggleNightButton.setOnClickListener(v -> {
+            isDarkTheme = !isDarkTheme;
+            prefs.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply();
+            updateNight();
+            updateTextViews();
         });
         mAboutButton = findViewById(R.id.about_button);
-        mAboutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new AboutDialog().show(getFragmentManager(), null);
-            }
-        });
+        mAboutButton.setOnClickListener(v -> new AboutDialog().show(getFragmentManager(), null));
         mSettingsButton = findViewById(R.id.settings_button);
-        mSettingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new SettingsDialog().show(getFragmentManager(), null);
-            }
-        });
+        mSettingsButton.setOnClickListener(v -> new SettingsDialog().show(getFragmentManager(), null));
 
-        mButtons.add(this.<TextView>findViewById(R.id.mark_1_button));
-        mButtons.add(this.<TextView>findViewById(R.id.mark_2_button));
-        mButtons.add(this.<TextView>findViewById(R.id.mark_3_button));
-        mButtons.add(this.<TextView>findViewById(R.id.mark_4_button));
-        mButtons.add(this.<TextView>findViewById(R.id.mark_5_button));
-        mButtons.add(this.<TextView>findViewById(R.id.backspace_button));
-        mButtons.add(this.<TextView>findViewById(R.id.clear_button));
+        mButtons.add(findViewById(R.id.mark_1_button));
+        mButtons.add(findViewById(R.id.mark_2_button));
+        mButtons.add(findViewById(R.id.mark_3_button));
+        mButtons.add(findViewById(R.id.mark_4_button));
+        mButtons.add(findViewById(R.id.mark_5_button));
+        mButtons.add(findViewById(R.id.backspace_button));
+        mButtons.add(findViewById(R.id.clear_button));
 
         mBackspaceButton = findViewById(R.id.backspace_button);
         mClearButton = findViewById(R.id.clear_button);
@@ -143,22 +126,16 @@ public class MainActivity extends Activity {
         findViewById(R.id.mark_4_back).setOnClickListener(getMarkButtonOnClickListener(4));
         findViewById(R.id.mark_5_back).setOnClickListener(getMarkButtonOnClickListener(5));
 
-        mBackspaceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!mMarks.isEmpty()) {
-                    mMarks.removeLast();
-                }
-                updateTextViews();
+        mBackspaceButton.setOnClickListener(v -> {
+            if (!mMarks.isEmpty()) {
+                mMarks.removeLast();
             }
+            updateTextViews();
         });
 
-        mClearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mMarks.clear();
-                updateTextViews();
-            }
+        mClearButton.setOnClickListener(v -> {
+            mMarks.clear();
+            updateTextViews();
         });
 
         updateNight();

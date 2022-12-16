@@ -28,14 +28,11 @@ public class AboutDialog extends DialogFragment {
         messageTextView.setTextColor(textViewColor);
         messageTextView.setText(Html.fromHtml(getString(R.string.about_message)));
 
-        view.findViewById(R.id.good_job_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = "https://play.google.com/store/apps/details?id=com.qwert2603.good_job";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
-                dismissAllowingStateLoss();
-            }
+        view.findViewById(R.id.good_job_button).setOnClickListener(v -> {
+            String url = "https://play.google.com/store/apps/details?id=com.qwert2603.good_job";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+            dismissAllowingStateLoss();
         });
 
         return new AlertDialog.Builder(getActivity())

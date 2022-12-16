@@ -38,12 +38,7 @@ public class SettingsDialog extends DialogFragment {
             }
         });
 
-        view.findViewById(R.id.ok_TextView).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismissAllowingStateLoss();
-            }
-        });
+        view.findViewById(R.id.ok_TextView).setOnClickListener(v -> dismissAllowingStateLoss());
 
         return new AlertDialog.Builder(getActivity())
                 .setView(view)
