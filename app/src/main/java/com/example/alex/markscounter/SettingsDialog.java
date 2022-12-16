@@ -11,9 +11,9 @@ import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
+@SuppressWarnings("deprecation")
 public class SettingsDialog extends DialogFragment {
 
     @Override
@@ -31,12 +31,9 @@ public class SettingsDialog extends DialogFragment {
         CheckBox mark1CheckBox = view.findViewById(R.id.mark_1_CheckBox);
         mark1CheckBox.setTextColor(textViewColor);
         mark1CheckBox.setChecked(prefs.getBoolean(MainActivity.KEY_MARK_1, false));
-        mark1CheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                prefs.edit().putBoolean(MainActivity.KEY_MARK_1, isChecked).apply();
-            }
-        });
+        mark1CheckBox.setOnCheckedChangeListener((buttonView, isChecked) ->
+                prefs.edit().putBoolean(MainActivity.KEY_MARK_1, isChecked).apply()
+        );
 
         view.findViewById(R.id.ok_TextView).setOnClickListener(v -> dismissAllowingStateLoss());
 

@@ -75,15 +75,13 @@ public class MainActivity extends Activity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String marksString = prefs.getString(KEY_MARKS, "");
-        if (marksString != null) {
-            for (int i = 0; i < marksString.length(); i++) {
-                final char c = marksString.charAt(i);
-                if (c == '1') mMarks.add(1);
-                if (c == '2') mMarks.add(2);
-                if (c == '3') mMarks.add(3);
-                if (c == '4') mMarks.add(4);
-                if (c == '5') mMarks.add(5);
-            }
+        for (int i = 0; i < marksString.length(); i++) {
+            final char c = marksString.charAt(i);
+            if (c == '1') mMarks.add(1);
+            if (c == '2') mMarks.add(2);
+            if (c == '3') mMarks.add(3);
+            if (c == '4') mMarks.add(4);
+            if (c == '5') mMarks.add(5);
         }
 
         isDarkTheme = prefs.getBoolean(KEY_DARK_THEME, false);
