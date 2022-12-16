@@ -1,6 +1,9 @@
 apply plugin: 'com.android.application'
 
 android {
+
+    namespace "com.example.alex.markscounter"
+
     signingConfigs {
         config {
             storeFile file('/home/alex/StudioProjects/key.jks')
@@ -10,11 +13,11 @@ android {
         }
     }
 
-    compileSdkVersion 31
+    compileSdkVersion 33
     defaultConfig {
         applicationId "com.alex.markscounter"
         minSdkVersion 16
-        targetSdkVersion 31
+        targetSdkVersion 33
         versionCode 14
         versionName "2.8.0"
         archivesBaseName = "marks_counter_$versionName"
