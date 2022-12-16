@@ -36,7 +36,6 @@ public class MainActivity extends Activity {
     private TextView mMarksTextView;
     private LinearLayout mRootLinearLayout;
     private ImageView mToggleNightButton;
-    private ImageView mAboutButton;
     private ImageView mSettingsButton;
 
     private final List<TextView> mButtons = new ArrayList<>();
@@ -101,8 +100,6 @@ public class MainActivity extends Activity {
             updateNight();
             updateTextViews();
         });
-        mAboutButton = findViewById(R.id.about_button);
-        mAboutButton.setOnClickListener(v -> new AboutDialog().show(getFragmentManager(), null));
         mSettingsButton = findViewById(R.id.settings_button);
         mSettingsButton.setOnClickListener(v -> new SettingsDialog().show(getFragmentManager(), null));
 
@@ -197,7 +194,6 @@ public class MainActivity extends Activity {
 
         mToggleNightButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_sun : R.drawable.ic_moon));
         mToggleNightButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
-        mAboutButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
         mSettingsButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_settings_white_24dp : R.drawable.ic_settings_black_24dp));
         mSettingsButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
 
