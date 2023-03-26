@@ -18,8 +18,8 @@ android {
         applicationId "com.alex.markscounter"
         minSdkVersion 16
         targetSdkVersion 33
-        versionCode 16
-        versionName "2.10.0"
+        versionCode 17
+        versionName "2.10.1"
         archivesBaseName = "marks_counter_$versionName"
     }
     buildTypes {
