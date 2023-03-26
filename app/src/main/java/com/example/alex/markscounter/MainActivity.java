@@ -3,6 +3,7 @@ package com.example.alex.markscounter;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,10 +22,20 @@ import java.util.Locale;
 
 public class MainActivity extends Activity {
 
-    private static final int MAX_MARKS_COUNT = 78;
+    private static final int MAX_MARKS_COUNT = 114;
 
     private static final String KEY_MARKS = "marks";
+
+    @SuppressWarnings("DeprecatedIsStillUsed")
+    @Deprecated
     private static final String KEY_DARK_THEME = "dark_theme";
+    private static final String KEY_DARK_MODE = "dark_mode";
+
+    public static final int DARK_MODE_WHITE = 0;
+    public static final int DARK_MODE_DARK = 1;
+    public static final int DARK_MODE_AUTO = 2;
+    public static final int DARK_MODES_COUNT = 3;
+
     public static final String KEY_MARK_1 = "mark_1";
 
     private SharedPreferences prefs;
@@ -71,6 +82,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //noinspection deprecation
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
         final String marksString = prefs.getString(KEY_MARKS, "");
@@ -83,7 +95,7 @@ public class MainActivity extends Activity {
             if (c == '5') mMarks.add(5);
         }
 
-        isDarkTheme = prefs.getBoolean(KEY_DARK_THEME, false);
+        isDarkTheme = calcIsDarkTheme();
 
         mRootLinearLayout = findViewById(R.id.root_LinearLayout);
         mRootLinearLayout
@@ -95,12 +107,16 @@ public class MainActivity extends Activity {
         mMarksTextView = findViewById(R.id.marks_text_view);
         mToggleNightButton = findViewById(R.id.toggle_night_button);
         mToggleNightButton.setOnClickListener(v -> {
-            isDarkTheme = !isDarkTheme;
-            prefs.edit().putBoolean(KEY_DARK_THEME, isDarkTheme).apply();
+            final int newDarkMode = (getDarkMode() + 1) % DARK_MODES_COUNT;
+            prefs.edit().putInt(KEY_DARK_MODE, newDarkMode).apply();
+
+            isDarkTheme = calcIsDarkTheme();
+
             updateNight();
             updateTextViews();
         });
         mSettingsButton = findViewById(R.id.settings_button);
+        //noinspection deprecation
         mSettingsButton.setOnClickListener(v -> new SettingsDialog().show(getFragmentManager(), null));
 
         mButtons.add(findViewById(R.id.mark_1_button));
@@ -151,6 +167,29 @@ public class MainActivity extends Activity {
         super.onStop();
     }
 
+    private boolean isSystemDarkMode() {
+        return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    private int getDarkMode() {
+        @SuppressWarnings("deprecation") final int defaultValue = prefs.contains(KEY_DARK_THEME)
+                ? (prefs.getBoolean(KEY_DARK_THEME, false) ? DARK_MODE_DARK : DARK_MODE_WHITE)
+                : DARK_MODE_AUTO;
+
+        return prefs.getInt(KEY_DARK_MODE, defaultValue);
+    }
+
+    private boolean calcIsDarkTheme() {
+        switch (getDarkMode()) {
+            case DARK_MODE_WHITE:
+                return false;
+            case DARK_MODE_DARK:
+                return true;
+            default:
+                return isSystemDarkMode();
+        }
+    }
+
     private void updateTextViews() {
         StringBuilder stringBuilder = new StringBuilder();
         int sum = 0;
@@ -192,7 +231,7 @@ public class MainActivity extends Activity {
         mAverageLabelTextView.setTextColor(textViewColor);
         mMarksTextView.setTextColor(textViewColor);
 
-        mToggleNightButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_sun : R.drawable.ic_moon));
+        mToggleNightButton.setImageDrawable(getResources().getDrawable(getDarkModeIcon()));
         mToggleNightButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
         mSettingsButton.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_settings_white_24dp : R.drawable.ic_settings_black_24dp));
         mSettingsButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_icon_button_night : R.drawable.background_icon_button));
@@ -203,6 +242,17 @@ public class MainActivity extends Activity {
 
         mBackspaceButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
         mClearButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
+    }
+
+    private int getDarkModeIcon() {
+        switch (getDarkMode()) {
+            case DARK_MODE_WHITE:
+                return R.drawable.ic_moon;
+            case DARK_MODE_DARK:
+                return R.drawable.ic_sun;
+            default:
+                return isSystemDarkMode() ? R.drawable.ic_auto_white : R.drawable.ic_auto_black;
+        }
     }
 
     private static int getAverageColor(double average) {
