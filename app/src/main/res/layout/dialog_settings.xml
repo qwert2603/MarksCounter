@@ -27,16 +27,6 @@
         android:textSize="16sp"
         tools:textColor="@color/text_night" />
 
-    <TextView
-        android:id="@+id/message_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textColorLink="@color/colorAccent"
-        android:textSize="16sp"
-        tools:text="@string/about_message"
-        tools:textColor="@color/text_night" />
-
     <Button
         android:id="@+id/ok_TextView"
         style="@android:style/Widget.DeviceDefault.Button.Borderless"

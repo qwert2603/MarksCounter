@@ -13,8 +13,6 @@
     <string name="text_n_a">n/a</string>
     <string name="empty">_</string>
 
-    <string name="about_message">Тут нет рекламы, а графика для ваших проектов здесь.</string>
-
     <string name="settings_title">Настройки</string>
     <string name="mark_1_enable">Оценка \"кол\"</string>
 </resources>
