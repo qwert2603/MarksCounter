@@ -4,10 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/MarksCounter.iml" filepath="$PROJECT_DIR$/.idea/modules/MarksCounter.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.androidTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/MarksCounter.app.unitTest.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/StudioProjects.MarksCounter.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/StudioProjects.MarksCounter.app.androidTest.iml" />
     </modules>
   </component>
 </project>
