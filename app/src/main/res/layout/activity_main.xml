@@ -185,7 +185,36 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="5" />
+            android:layout_weight="3.4" />
+
+        <LinearLayout
+            android:id="@+id/for_sale_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:orientation="horizontal"
+            android:paddingVertical="8dp"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/for_sale_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_ruble_black_24"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/for_sale_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:textColorLink="@color/colorAccent"
+                android:textSize="14sp"
+                tools:text="@string/for_sale"
+                tools:textColor="@android:color/black" />
+
+        </LinearLayout>
 
     </LinearLayout>
 

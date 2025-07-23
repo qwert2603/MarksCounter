@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.transition.TransitionManager;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -53,6 +54,9 @@ public class MainActivity extends Activity {
     private TextView mBackspaceButton;
     private TextView mClearButton;
     private FrameLayout mMark1Back;
+
+    private ImageView mForSaleImage;
+    private TextView mForSaleTextView;
 
     private final LinkedList<Integer> mMarks = new LinkedList<>();
 
@@ -131,6 +135,10 @@ public class MainActivity extends Activity {
         mClearButton = findViewById(R.id.clear_button);
         mMark1Back = findViewById(R.id.mark_1_back);
 
+        final View mForSaleContainer = findViewById(R.id.for_sale_container);
+        mForSaleImage = findViewById(R.id.for_sale_image);
+        mForSaleTextView = findViewById(R.id.for_sale_text_view);
+
         findViewById(R.id.mark_1_back).setOnClickListener(getMarkButtonOnClickListener(1));
         findViewById(R.id.mark_2_back).setOnClickListener(getMarkButtonOnClickListener(2));
         findViewById(R.id.mark_3_back).setOnClickListener(getMarkButtonOnClickListener(3));
@@ -153,6 +161,10 @@ public class MainActivity extends Activity {
         updateTextViews();
 
         mMark1Back.setVisibility(prefs.getBoolean(KEY_MARK_1, false) ? View.VISIBLE : View.GONE);
+
+        //noinspection deprecation
+        mForSaleContainer.setOnClickListener(v -> new ForSaleDialog().show(getFragmentManager(), null));
+        mForSaleTextView.setText(Html.fromHtml(getString(R.string.for_sale)));
     }
 
     @Override
@@ -200,7 +212,7 @@ public class MainActivity extends Activity {
             sum += mark;
         }
         String marksString = stringBuilder.toString();
-        if (marksString.equals("")) {
+        if (marksString.isEmpty()) {
             marksString = getString(R.string.empty);
         }
         mMarksTextView.setText(marksString);
@@ -242,6 +254,9 @@ public class MainActivity extends Activity {
 
         mBackspaceButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
         mClearButton.setBackground(getResources().getDrawable(isDarkTheme ? R.drawable.background_button_remote_night : R.drawable.background_button_remote));
+
+        mForSaleImage.setImageDrawable(getResources().getDrawable(isDarkTheme ? R.drawable.ic_ruble_white_24 : R.drawable.ic_ruble_black_24));
+        mForSaleTextView.setTextColor(textViewColor);
     }
 
     private int getDarkModeIcon() {

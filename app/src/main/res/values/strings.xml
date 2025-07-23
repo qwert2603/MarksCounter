@@ -15,4 +15,7 @@
 
     <string name="settings_title">Настройки</string>
     <string name="mark_1_enable">Оценка \"кол\"</string>
+
+    <string name="for_sale"><![CDATA[Это приложение в Google Play продаётся. <a href="">Подробнее</a>]]></string>
+    <string name="for_sale_details">#1 в поиске.\n\nMAU 100.000 в мае 2025.\n\nКонверсия из просмотра страницы в Google Play в установку более 50%.\n\nПишите на marks_counter@bk.ru.</string>
 </resources>
